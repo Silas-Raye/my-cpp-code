@@ -10,7 +10,8 @@ public:
     BalancedBST();
     ~BalancedBST();
 
-    void insert(string name, int ID); // done
+    void insert(string name, int ID);
+    // - Balance the tree automatically if necessary
     void remove(int ID);
     // - Check that the input ID is valid.
     // - Find and remove the account with the specified ID from the tree.
