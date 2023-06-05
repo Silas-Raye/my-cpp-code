@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <regex>
+#include <stack>
 using namespace std;
 
 class BalancedBST {
@@ -20,17 +21,10 @@ public:
     // - Three cases: no children, one child, two children.
     // - You must prioritize replacing a removed node with its inorder successor for the case where the deleted node has two children.
     bool search(int ID); // done
-    bool search(string name);
-    // - Check that the input name is valid.
-    // - Search for the student with the specified name, NAME in the tree.
-    // - If the student name was found, print the associated ID.
-    // - If the tree has more than one object with the same NAME, print each ID on a new line with no other spaces and in the same relative order as a pre-order traversal.
-    // - If the name does not exist within the tree, print “unsuccessful”.
+    bool search(string name); // done
     void printInorder(); // done
-    void printPreorder();
-    // - Print out a comma separated preorder traversal of the names in the tree.
-    void printPostorder();
-    // - Print out a comma separated postorder traversal of the names in the tree.
+    void printPreorder(); // done
+    void printPostorder(); // done
     void printLevelCount();
     // - Prints the number of levels that exist in the tree.
     // - Prints 0 if the head of the tree is null. i.e. the tree's head is at depth 1.
@@ -57,8 +51,8 @@ private:
     bool searchHelper(Node* node, int ID, bool printing);
     bool searchHelper(Node* node, string name);
     vector<string> printInorderHelper(Node* node);
-    void printPreorderHelper(Node* node);
-    void printPostorderHelper(Node* node);
+    vector<string> printPreorderHelper(Node* node);
+    vector<string> printPostorderHelper(Node* node);
     void printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);
     Node* getInorderSucessor(Node* node);

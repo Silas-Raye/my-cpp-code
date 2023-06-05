@@ -63,83 +63,142 @@ void BalancedBST::removeHelper(Node*& node, int ID) {
 }
 
 bool BalancedBST::search(int ID) {
-    bool found = false;
-    if (checkID(ID)) {
-        found = searchHelper(root, ID, true);
+    if (checkID(ID) && searchHelper(root, ID, true)) {
+        return true;
     }
-    else {
-        cout << "unsuccessful" << endl;
-    }
-    return found;
-}
-
-bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
-    bool found = false;
-    if (node == nullptr) {
-        if (printing) cout << "unsuccessful" << endl;
-        found = false;
-    }
-    else if (ID == node->ID) {
-        if (printing) cout << node->name << endl;
-        found = true;
-    }
-    else if (ID < node->ID) {
-        found = searchHelper(node->left, ID, printing);
-    }
-    else if (ID > node->ID) {
-        found = searchHelper(node->right, ID, printing);
-    }
-    return found;
-}
-
-bool BalancedBST::search(string name) {
-    return searchHelper(root, name);
-}
-
-bool BalancedBST::searchHelper(Node* node, string name) {
+    cout << "unsuccessful" << endl;
     return false;
 }
 
-void BalancedBST::printInorder() {
-    vector<string> inOrderVec = printInorderHelper(root);
-    if (inOrderVec.size() > 0) {
-        for (int i = 0; i < inOrderVec.size() - 1; i++) {
-            cout << inOrderVec[i] << ", ";
+bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
+    if (node == nullptr) {
+        if (printing) cout << "unsuccessful" << endl;
+        return false;
+    }
+    else if (ID == node->ID) {
+        if (printing) cout << node->name << endl;
+        return true;
+    }
+    else if (ID < node->ID) {
+        return searchHelper(node->left, ID, printing);
+    }
+    else if (ID > node->ID) {
+        return searchHelper(node->right, ID, printing);
+    }
+    return false;
+}
+
+bool BalancedBST::search(string name) {
+    if (checkName(name) && searchHelper(root, name)) {
+        return true;
+    }
+    cout << "unsuccessful" << endl;
+    return false;
+}
+
+bool BalancedBST::searchHelper(Node* node, string name) {
+    bool found = false;
+    stack<Node*> s;
+    s.push(root);
+    while (!s.empty()) {
+        Node* curr = s.top();
+        s.pop();
+        if (curr->name == name) {
+            cout << curr->ID << endl;
+            found = true;
         }
-        cout << inOrderVec[inOrderVec.size() - 1];
+        if (curr->left) {
+            s.push(curr->left);
+        }
+        if (curr->right) {
+            s.push(curr->right);
+        }
+    }
+    return found;
+}
+
+void BalancedBST::printInorder() {
+    vector<string> inorderVec = printInorderHelper(root);
+    if (inorderVec.size() > 0) {
+        for (int i = 0; i < inorderVec.size() - 1; i++) {
+            cout << inorderVec[i] << ", ";
+        }
+        cout << inorderVec[inorderVec.size() - 1];
     }
     cout << endl;
 }
 
 vector<string> BalancedBST::printInorderHelper(Node* node) {
-    vector<string> inOrderVec;
+    vector<string> inorderVec;
     // base case: if the node is null, return an empty vector
     if (node == nullptr) {
-        return inOrderVec;
+        return inorderVec;
     }
     // traverse the left subtree
     vector<string> leftSubtree = printInorderHelper(node->left);
-    inOrderVec.insert(inOrderVec.end(), leftSubtree.begin(), leftSubtree.end());
+    inorderVec.insert(inorderVec.end(), leftSubtree.begin(), leftSubtree.end());
     // add the current node's value to the vector
-    inOrderVec.push_back(node->name);
+    inorderVec.push_back(node->name);
     // traverse the right subtree
     vector<string> rightSubtree = printInorderHelper(node->right);
-    inOrderVec.insert(inOrderVec.end(), rightSubtree.begin(), rightSubtree.end());
-    return inOrderVec;
+    inorderVec.insert(inorderVec.end(), rightSubtree.begin(), rightSubtree.end());
+    return inorderVec;
 }
 
 void BalancedBST::printPreorder() {
-    printPreorderHelper(root);
+    vector<string> preorderVec = printPreorderHelper(root);
+    if (preorderVec.size() > 0) {
+        for (int i = 0; i < preorderVec.size() - 1; i++) {
+            cout << preorderVec[i] << ", ";
+        }
+        cout << preorderVec[preorderVec.size() - 1];
+    }
+    cout << endl;
 }
 
-void BalancedBST::printPreorderHelper(Node* node) {
+vector<string> BalancedBST::printPreorderHelper(Node* node) {
+    vector<string> preorderVec;
+    // base case: if the node is null, return an empty vector
+    if (node == nullptr) {
+        return preorderVec;
+    }
+    // add the current node's value to the vector
+    preorderVec.push_back(node->name);
+    // traverse the left subtree
+    vector<string> leftSubtree = printPreorderHelper(node->left);
+    preorderVec.insert(preorderVec.end(), leftSubtree.begin(), leftSubtree.end());
+    // traverse the right subtree
+    vector<string> rightSubtree = printPreorderHelper(node->right);
+    preorderVec.insert(preorderVec.end(), rightSubtree.begin(), rightSubtree.end());
+    return preorderVec;
 }
 
 void BalancedBST::printPostorder() {
-    printPostorderHelper(root);
+    vector<string> postorderVec = printPostorderHelper(root);
+    if (postorderVec.size() > 0) {
+        for (int i = 0; i < postorderVec.size() - 1; i++) {
+            cout << postorderVec[i] << ", ";
+        }
+        cout << postorderVec[postorderVec.size() - 1];
+    }
+    cout << endl;
 }
 
-void BalancedBST::printPostorderHelper(Node* node) {
+vector<string> BalancedBST::printPostorderHelper(Node* node) {
+    vector<string> postorderVec;
+    // base case: if the node is null, return an empty vector
+    if (node == nullptr) {
+        return postorderVec;
+    }
+    // traverse the left subtree
+    vector<string> leftSubtree = printPostorderHelper(node->left);
+    postorderVec.insert(postorderVec.end(), leftSubtree.begin(), leftSubtree.end());
+    // traverse the right subtree
+    vector<string> rightSubtree = printPostorderHelper(node->right);
+    postorderVec.insert(postorderVec.end(), rightSubtree.begin(), rightSubtree.end());
+    // add the current node's value to the vector
+    postorderVec.push_back(node->name);
+    return postorderVec;
 }
 
 void BalancedBST::printLevelCount() {

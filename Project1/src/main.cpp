@@ -66,7 +66,7 @@ int main(){
 				}
 				else {
 					string name = cmd.substr(8, cmd.length() - 9);
-					//tree.search(name);
+					tree.search(name);
 				}
     		}
 		}
