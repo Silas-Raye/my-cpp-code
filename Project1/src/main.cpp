@@ -46,7 +46,22 @@ int main(){
 			}
 		}
 
+		else if (cmd.substr(0, 13) == "removeInorder") {
+			try {
+				int num = stoi(cmd.substr(14));
+				tree.removeInorder(num);
+			} catch (const exception& e) {
+				cout << "unsuccessful" << endl;
+    		}
+		}
+
 		else if (cmd.substr(0, 6) == "remove") {
+			try {
+				int ID = stoi(cmd.substr(7));
+				tree.remove(ID);
+			} catch (const exception& e) {
+				cout << "unsuccessful" << endl;
+    		}
 		}
 
 		else if (cmd.substr(0, 6) == "search") {
@@ -76,15 +91,14 @@ int main(){
 		}
 
 		else if (cmd.substr(0, 13) == "printPreorder") {
+			tree.printPreorder();
 		}
 
 		else if (cmd.substr(0, 14) == "printPostorder") {
+			tree.printPostorder();
 		}
 
 		else if (cmd.substr(0, 15) == "printLevelCount") {
-		}
-
-		else if (cmd.substr(0, 13) == "removeInorder") {
 		}
 
 		else {
