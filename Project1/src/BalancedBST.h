@@ -12,9 +12,9 @@ public:
     ~BalancedBST();
 
 private:
-    // - Add a height element to the node struct and update the height after each insertion/deletion.
     struct Node {
         int ID;
+        int height;
         string name;
         Node* left;
         Node* right;
@@ -22,17 +22,17 @@ private:
 
 public:
     void insert(string name, int ID);
-    // - Balance the tree automatically if necessary
+    // Update the height after each insertion.
+    // Balance the tree automatically if necessary
     Node* remove(int ID);
-    // - case 3: node has two children is broken
+    // Update the height after each deletion.
     bool search(int ID); // done
-    bool search(string name); // done
+    bool search(string name);
+    // Not printing IDs in the right order in the case of duplicate names.
     void printInorder(); // done
     void printPreorder(); // done
     void printPostorder(); // done
-    void printLevelCount();
-    // - Prints the number of levels that exist in the tree.
-    // - Prints 0 if the head of the tree is null. i.e. the tree's head is at depth 1.
+    void printLevelCount(); // done
     void removeInorder(int n); // done
 
 private:
@@ -44,10 +44,10 @@ private:
     void insertHelper(Node*& node, string name, int ID);
     BalancedBST::Node* removeHelper(Node*& node, int ID);
     bool searchHelper(Node* node, int ID, bool printing);
-    bool searchHelper(Node* node, string name, bool printing);
+    bool searchHelper(Node* node, string name);
     vector<string> printInorderHelper(Node* node);
     vector<string> printPreorderHelper(Node* node);
     vector<string> printPostorderHelper(Node* node);
-    void printLevelCountHelper(Node* node);
+    int printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);
 };

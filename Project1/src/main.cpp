@@ -99,6 +99,7 @@ int main(){
 		}
 
 		else if (cmd.substr(0, 15) == "printLevelCount") {
+			tree.printLevelCount();
 		}
 
 		else {

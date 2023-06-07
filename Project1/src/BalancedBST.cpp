@@ -90,16 +90,17 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
                 return temp;
             }
         }
-        // case 3: node has two children - BROKEN
+        // case 3: node has two children
         // inorder successor is the right subtree's left most node
         Node* inorderSuccessor = node->right;
         while (inorderSuccessor->left != nullptr) {
             inorderSuccessor = inorderSuccessor->left;
         }
         // replace node with the inorder successor and delete the inorder successor
+        int tempID = inorderSuccessor->ID;
         node->name = inorderSuccessor->name;
-        node->ID = inorderSuccessor->ID;
-        removeHelper(inorderSuccessor, inorderSuccessor->ID);
+        removeHelper(root, inorderSuccessor->ID);
+        node->ID = tempID;
     }
     else if (ID < node->ID) {
         node->left = removeHelper(node->left, ID);
@@ -120,7 +121,6 @@ bool BalancedBST::search(int ID) {
 
 bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
     if (node == nullptr) {
-        if (printing) cout << "unsuccessful" << endl;
         return false;
     }
     else if (ID == node->ID) {
@@ -137,29 +137,32 @@ bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
 }
 
 bool BalancedBST::search(string name) {
-    if (checkName(name) && searchHelper(root, name, true)) {
+    if (checkName(name) && searchHelper(root, name)) {
         return true;
     }
     cout << "unsuccessful" << endl;
     return false;
 }
 
-bool BalancedBST::searchHelper(Node* node, string name, bool printing) {
+bool BalancedBST::searchHelper(Node* node, string name) {
+    if (node == nullptr) {
+        return false;
+    }
     bool found = false;
     stack<Node*> s;
     s.push(root);
     while (!s.empty()) {
         Node* curr = s.top();
         s.pop();
-        if (curr->name == name) {
-            if (printing) cout << curr->ID << endl;
-            found = true;
-        }
         if (curr->left) {
             s.push(curr->left);
         }
         if (curr->right) {
             s.push(curr->right);
+        }
+        if (curr->name == name) {
+            cout << curr->ID << endl;
+            found = true;
         }
     }
     return found;
@@ -250,9 +253,16 @@ vector<string> BalancedBST::printPostorderHelper(Node* node) {
 }
 
 void BalancedBST::printLevelCount() {
+    cout << printLevelCountHelper(root) << endl;
 }
 
-void BalancedBST::printLevelCountHelper(Node* node) {
+int BalancedBST::printLevelCountHelper(Node* node) {
+    if (node == nullptr) {
+        return 0;
+    }
+    int LeftHeight = printLevelCountHelper(node->left);
+    int RightHeight = printLevelCountHelper(node->right);
+    return max(LeftHeight, RightHeight) + 1;
 }
 
 void BalancedBST::removeInorder(int n) {
@@ -261,9 +271,8 @@ void BalancedBST::removeInorder(int n) {
 
 void BalancedBST::removeInorderHelper(Node* node, int n) {
     vector<string> inorderVec = printInorderHelper(node);
-    string name = "";
     if (n <= inorderVec.size()) {
-        name = inorderVec[n];
+        string name = inorderVec[n];
         stack<Node*> s;
         s.push(root);
         Node* curr = nullptr;
