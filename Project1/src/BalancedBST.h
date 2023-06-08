@@ -24,6 +24,33 @@ public:
     void insert(string name, int ID);
     // Update the height after each insertion.
     // Balance the tree automatically if necessary
+    /*
+    UPDATE HEIGHTS
+
+    IF tree is right heavy {
+        IF tree's right subtree is left heavy
+            Perform Right Left rotation & update height
+        ELSE
+            Perform Left rotation & update height
+    }
+    ELSE IF tree is left heavy {
+        IF tree's left subtree is right heavy
+            Perform Left Right rotation & update height
+        ELSE
+            Perform Right rotation & update height
+    }
+    =====
+    rotateleft (node) {
+        grandchild = node->right->left;
+        newParent = node->right;
+        newParent->left = node;
+        node->right = grandchild;
+        return newParent;
+    }
+    =====
+    Balance Factor of x = Height (left subtree of ×) - Height (right subtree of x)
+    =====
+    */
     Node* remove(int ID);
     // Update the height after each deletion.
     bool search(int ID); // done
