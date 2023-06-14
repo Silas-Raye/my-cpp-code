@@ -104,7 +104,7 @@ int main(){
 
 		else {
 			//cout << "unsuccessful" << endl;
-			tree.printHeight(11111111);
+			tree.printHeight(22222222);
 		}
 	}
 

@@ -69,6 +69,12 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
     if (node == nullptr) {
         return node;
     }
+    else if (ID < node->ID) {
+        node->left = removeHelper(node->left, ID);
+    }
+    else if (ID > node->ID) {
+        node->right = removeHelper(node->right, ID);
+    }
     else if (node->ID == ID) {
         // case 1: node has no children
         if (node->left == nullptr && node->right == nullptr) {
@@ -91,25 +97,20 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
                 node = nullptr;
                 return temp;
             }
+            // case 3: node has two children
+            // inorder successor is the right subtree's left most node
+            Node* inorderSuccessor = node->right;
+            while (inorderSuccessor->left != nullptr) {
+                inorderSuccessor = inorderSuccessor->left;
+            }
+            // replace node with the inorder successor and delete the inorder successor
+            int tempID = inorderSuccessor->ID;
+            node->name = inorderSuccessor->name;
+            removeHelper(root, inorderSuccessor->ID);
+            node->ID = tempID;
         }
-        // case 3: node has two children
-        // inorder successor is the right subtree's left most node
-        Node* inorderSuccessor = node->right;
-        while (inorderSuccessor->left != nullptr) {
-            inorderSuccessor = inorderSuccessor->left;
-        }
-        // replace node with the inorder successor and delete the inorder successor
-        int tempID = inorderSuccessor->ID;
-        node->name = inorderSuccessor->name;
-        removeHelper(root, inorderSuccessor->ID);
-        node->ID = tempID;
     }
-    else if (ID < node->ID) {
-        node->left = removeHelper(node->left, ID);
-    }
-    else if (ID > node->ID) {
-        node->right = removeHelper(node->right, ID);
-    }
+    node->height = 1 + max(height(node->left),height(node->right));
     return node;
 }
 
