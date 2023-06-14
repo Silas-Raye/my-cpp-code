@@ -54,18 +54,6 @@ BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) {
     }
     node->height = 1 + max(height(node->left),height(node->right));
     int balance = getBalance(node);
-    /*
-    IF tree is right heavy
-        IF tree's right subtree is left heavy
-            Perform Right Left rotation
-        ELSE
-            Perform Left rotation
-    ELSE IF tree is left heavy
-        IF tree's left subtree is right heavy
-            Perform Left Right rotation
-        ELSE
-            Perform Right rotation
-    */
 
     if (balance > 1) { // tree is right heavy
         if (getBalance(node->right) < 0) { // tree's right subtree is left heavy
@@ -116,7 +104,7 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
             return nullptr;
         }
         // case 2: node has one child
-        if (node->left == nullptr || node->right == nullptr) {
+        else if (node->left == nullptr || node->right == nullptr) {
             if (node->left != nullptr) {
                 Node* temp = node->left;
                 delete node;
@@ -130,7 +118,9 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
                 node = nullptr;
                 return temp;
             }
-            // case 3: node has two children
+        }
+        // case 3: node has two children
+        else {
             // inorder successor is the right subtree's left most node
             Node* inorderSuccessor = node->right;
             while (inorderSuccessor->left != nullptr) {
