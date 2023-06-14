@@ -22,12 +22,8 @@ private:
     };
 
 public:
-    Node* insert(string name, int ID);
-    // Update the height after each insertion
-    // Balance the tree automatically if necessary
-    Node* remove(int ID);
-    // Update the height after each deletion
-    // See Stepik 5.2
+    Node* insert(string name, int ID); // done
+    Node* remove(int ID); // done
     bool search(int ID); // done
     bool search(string name);
     // Not printing IDs in the right order in the case of duplicate names
@@ -36,8 +32,6 @@ public:
     void printPostorder(); // done
     void printLevelCount(); // done
     void removeInorder(int n); // done
-    void printHeight(int ID); // temp
-    void printHeightHelper(Node* node, int ID); // temp
 
 private:
     Node* root;
@@ -50,7 +44,7 @@ private:
     bool searchHelper(Node* node, int ID, bool printing);
     bool searchHelper(Node* node, string name);
     vector<string> printInorderHelper(Node* node);
-    vector<string> printPreorderHelper(Node* node);
+    vector<Node*> printPreorderHelper(Node* node);
     vector<string> printPostorderHelper(Node* node);
     int printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);

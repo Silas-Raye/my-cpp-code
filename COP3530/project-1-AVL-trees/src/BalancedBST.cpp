@@ -175,19 +175,10 @@ bool BalancedBST::searchHelper(Node* node, string name) {
         return false;
     }
     bool found = false;
-    stack<Node*> s;
-    s.push(root);
-    while (!s.empty()) {
-        Node* curr = s.top();
-        s.pop();
-        if (curr->left) {
-            s.push(curr->left);
-        }
-        if (curr->right) {
-            s.push(curr->right);
-        }
-        if (curr->name == name) {
-            cout << curr->ID << endl;
+    vector<Node*> preorderVec = printPreorderHelper(root);
+    for (int i = 0; i < preorderVec.size(); i++) {
+        if (name == preorderVec[i]->name) {
+            cout << preorderVec[i]->ID << endl;
             found = true;
         }
     }
@@ -223,29 +214,29 @@ vector<string> BalancedBST::printInorderHelper(Node* node) {
 }
 
 void BalancedBST::printPreorder() {
-    vector<string> preorderVec = printPreorderHelper(root);
+    vector<Node*> preorderVec = printPreorderHelper(root);
     if (preorderVec.size() > 0) {
         for (int i = 0; i < preorderVec.size() - 1; i++) {
-            cout << preorderVec[i] << ", ";
+            cout << preorderVec[i]->name << ", ";
         }
-        cout << preorderVec[preorderVec.size() - 1];
+        cout << preorderVec[preorderVec.size() - 1]->name;
     }
     cout << endl;
 }
 
-vector<string> BalancedBST::printPreorderHelper(Node* node) {
-    vector<string> preorderVec;
+vector<BalancedBST::Node*> BalancedBST::printPreorderHelper(Node* node) {
+    vector<Node*> preorderVec;
     // base case: if the node is null, return an empty vector
     if (node == nullptr) {
         return preorderVec;
     }
     // add the current node's value to the vector
-    preorderVec.push_back(node->name);
+    preorderVec.push_back(node);
     // traverse the left subtree
-    vector<string> leftSubtree = printPreorderHelper(node->left);
+    vector<Node*> leftSubtree = printPreorderHelper(node->left);
     preorderVec.insert(preorderVec.end(), leftSubtree.begin(), leftSubtree.end());
     // traverse the right subtree
-    vector<string> rightSubtree = printPreorderHelper(node->right);
+    vector<Node*> rightSubtree = printPreorderHelper(node->right);
     preorderVec.insert(preorderVec.end(), rightSubtree.begin(), rightSubtree.end());
     return preorderVec;
 }
@@ -337,25 +328,6 @@ BalancedBST::Node* BalancedBST::rotateRight(Node* node) {
     newParent->right = node;
     node->left = grandchild;
     return newParent;
-}
-
-void BalancedBST::printHeight(int ID) {
-    printHeightHelper(root, ID);
-}
-
-void BalancedBST::printHeightHelper(Node* node, int ID) {
-    if (node == nullptr) {
-        cout << 0 << endl;
-    }
-    else if (ID == node->ID) {
-        cout << node->name << ", " << node->height << endl;
-    }
-    else if (ID < node->ID) {
-        printHeightHelper(node->left, ID);
-    }
-    else if (ID > node->ID) {
-        printHeightHelper(node->right, ID);
-    }
 }
 
 int BalancedBST::height(Node* node) {

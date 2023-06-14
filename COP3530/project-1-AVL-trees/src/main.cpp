@@ -103,8 +103,7 @@ int main(){
 		}
 
 		else {
-			//cout << "unsuccessful" << endl;
-			tree.printHeight(22222222);
+			cout << "unsuccessful" << endl;
 		}
 	}
 
