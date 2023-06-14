@@ -41,6 +41,7 @@ void BalancedBST::insertHelper(Node*& node, string name, int ID) {
     if (node == nullptr) {
         node = new Node;
         node->ID = ID;
+        node->height = 1;
         node->name = name;
         node->left = nullptr;
         node->right = nullptr;
@@ -51,7 +52,22 @@ void BalancedBST::insertHelper(Node*& node, string name, int ID) {
     else {
         insertHelper(node->right, name, ID);
     }
-    //TODO: Balance the tree automatically if necessary
+    // balance factor of x = Height (left subtree of ×) - Height (right subtree of x)
+    // balance the tree automatically if necessary
+    /*
+    IF tree is right heavy {
+        IF tree's right subtree is left heavy
+            Perform Right Left rotation & update height
+        ELSE
+            Perform Left rotation & update height
+    }
+    ELSE IF tree is left heavy {
+        IF tree's left subtree is right heavy
+            Perform Left Right rotation & update height
+        ELSE
+            Perform Right rotation & update height
+    }
+    */
 }
 
 BalancedBST::Node* BalancedBST::remove(int ID) {
@@ -295,4 +311,20 @@ void BalancedBST::removeInorderHelper(Node* node, int n) {
     else {
         cout << "unsuccessful" << endl;
     }
+}
+
+BalancedBST::Node* rotateLeft(Node* node) {
+    grandchild = node->right->left;
+    newParent = node->right;
+    newParent->left = node;
+    node->right = grandchild;
+    return newParent;
+}
+
+BalancedBST::Node* rotateRight(Node* node) {
+    grandchild = node->left->right;
+    newParent = node->left;
+    newParent->right = node;
+    node->left = grandchild;
+    return newParent;
 }

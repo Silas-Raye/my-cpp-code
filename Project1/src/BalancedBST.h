@@ -22,40 +22,14 @@ private:
 
 public:
     void insert(string name, int ID);
-    // Update the height after each insertion.
+    // Update the height after each insertion
     // Balance the tree automatically if necessary
-    /*
-    UPDATE HEIGHTS
-
-    IF tree is right heavy {
-        IF tree's right subtree is left heavy
-            Perform Right Left rotation & update height
-        ELSE
-            Perform Left rotation & update height
-    }
-    ELSE IF tree is left heavy {
-        IF tree's left subtree is right heavy
-            Perform Left Right rotation & update height
-        ELSE
-            Perform Right rotation & update height
-    }
-    =====
-    rotateleft (node) {
-        grandchild = node->right->left;
-        newParent = node->right;
-        newParent->left = node;
-        node->right = grandchild;
-        return newParent;
-    }
-    =====
-    Balance Factor of x = Height (left subtree of ×) - Height (right subtree of x)
-    =====
-    */
     Node* remove(int ID);
-    // Update the height after each deletion.
+    // Update the height after each deletion
+    // See Stepik 5.2
     bool search(int ID); // done
     bool search(string name);
-    // Not printing IDs in the right order in the case of duplicate names.
+    // Not printing IDs in the right order in the case of duplicate names
     void printInorder(); // done
     void printPreorder(); // done
     void printPostorder(); // done
@@ -77,4 +51,6 @@ private:
     vector<string> printPostorderHelper(Node* node);
     int printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);
+    BalancedBST::Node* rotateLeft(Node* node);
+    BalancedBST::Node* rotateRight(Node* node);
 };
