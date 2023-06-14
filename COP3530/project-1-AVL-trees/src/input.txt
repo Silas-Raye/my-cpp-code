@@ -1,0 +1,8 @@
+7
+insert "Brandon" 45674567
+insert "Brian" 35455565
+insert "Briana" 87878787
+insert "Bella" 95462138
+printInorder
+remove 45674567 // not working
+printInorder

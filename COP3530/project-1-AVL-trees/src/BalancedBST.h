@@ -22,7 +22,7 @@ private:
     };
 
 public:
-    void insert(string name, int ID);
+    Node* insert(string name, int ID);
     // Update the height after each insertion
     // Balance the tree automatically if necessary
     Node* remove(int ID);
@@ -45,8 +45,8 @@ private:
     void destructorHelper(Node* node);
     bool checkName(string name);
     bool checkID(int ID);
-    void insertHelper(Node*& node, string name, int ID);
-    BalancedBST::Node* removeHelper(Node*& node, int ID);
+    Node* insertHelper(Node*& node, string name, int ID);
+    Node* removeHelper(Node*& node, int ID);
     bool searchHelper(Node* node, int ID, bool printing);
     bool searchHelper(Node* node, string name);
     vector<string> printInorderHelper(Node* node);
@@ -54,8 +54,8 @@ private:
     vector<string> printPostorderHelper(Node* node);
     int printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);
-    BalancedBST::Node* rotateLeft(Node* node);
-    BalancedBST::Node* rotateRight(Node* node);
+    Node* rotateLeft(Node* node);
+    Node* rotateRight(Node* node);
     int height(Node* node);
-    //void updateNodeHeight(Node* node);
+    int getBalance(Node* node);
 };

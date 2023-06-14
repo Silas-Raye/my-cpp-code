@@ -27,7 +27,7 @@ bool BalancedBST::checkID(int ID) {
     return true;
 }
 
-void BalancedBST::insert(string name, int ID) {
+BalancedBST::Node* BalancedBST::insert(string name, int ID) {
     if (checkName(name) && checkID(ID) && !searchHelper(root, ID, false)) {
         insertHelper(root, name, ID);
         cout << "successful" << endl;
@@ -35,9 +35,10 @@ void BalancedBST::insert(string name, int ID) {
     else {
         cout << "unsuccessful" << endl;
     }
+    return root;
 }
 
-void BalancedBST::insertHelper(Node*& node, string name, int ID) {
+BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) {
     if (node == nullptr) {
         node = new Node;
         node->ID = ID;
@@ -52,7 +53,39 @@ void BalancedBST::insertHelper(Node*& node, string name, int ID) {
         insertHelper(node->right, name, ID);
     }
     node->height = 1 + max(height(node->left),height(node->right));
-    
+    int balance = getBalance(node);
+    /*
+    IF tree is right heavy
+        IF tree's right subtree is left heavy
+            Perform Right Left rotation
+        ELSE
+            Perform Left rotation
+    ELSE IF tree is left heavy
+        IF tree's left subtree is right heavy
+            Perform Left Right rotation
+        ELSE
+            Perform Right rotation
+    */
+
+    if (balance > 1) { // tree is right heavy
+        if (getBalance(node->right) < 0) { // tree's right subtree is left heavy
+            node->right = rotateRight(node->right);
+            node = rotateLeft(node);
+        }
+        else {
+            node = rotateLeft(node);
+        }
+    }
+    if (balance < -1) { // tree is left heavy
+        if (getBalance(node->left) > 0) { // tree's left subtree is right heavy
+            node->left = rotateLeft(node->left);
+            node = rotateRight(node);
+        }
+        else {
+            node = rotateRight(node);
+        }
+    }
+    return node;
 }
 
 BalancedBST::Node* BalancedBST::remove(int ID) {
@@ -339,4 +372,10 @@ int BalancedBST::height(Node* node) {
     if (node == nullptr)
         return 0;
     return node->height;
+}
+
+int BalancedBST::getBalance(Node* node) {
+    if (node == nullptr)
+        return 0;
+    return height(node->right) - height(node->left);
 }
