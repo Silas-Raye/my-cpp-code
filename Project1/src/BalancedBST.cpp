@@ -41,7 +41,6 @@ void BalancedBST::insertHelper(Node*& node, string name, int ID) {
     if (node == nullptr) {
         node = new Node;
         node->ID = ID;
-        node->height = 1;
         node->name = name;
         node->left = nullptr;
         node->right = nullptr;
@@ -52,22 +51,8 @@ void BalancedBST::insertHelper(Node*& node, string name, int ID) {
     else {
         insertHelper(node->right, name, ID);
     }
-    // balance factor of x = Height (left subtree of ×) - Height (right subtree of x)
-    // balance the tree automatically if necessary
-    /*
-    IF tree is right heavy {
-        IF tree's right subtree is left heavy
-            Perform Right Left rotation & update height
-        ELSE
-            Perform Left rotation & update height
-    }
-    ELSE IF tree is left heavy {
-        IF tree's left subtree is right heavy
-            Perform Left Right rotation & update height
-        ELSE
-            Perform Right rotation & update height
-    }
-    */
+    node->height = 1 + max(height(node->left),height(node->right));
+    
 }
 
 BalancedBST::Node* BalancedBST::remove(int ID) {
@@ -97,6 +82,7 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
                 Node* temp = node->left;
                 delete node;
                 node = nullptr;
+                temp->height = 1 + max(height(temp->left),height(temp->right));
                 return temp;
             }
             else {
@@ -313,18 +299,43 @@ void BalancedBST::removeInorderHelper(Node* node, int n) {
     }
 }
 
-BalancedBST::Node* rotateLeft(Node* node) {
-    grandchild = node->right->left;
-    newParent = node->right;
+BalancedBST::Node* BalancedBST::rotateLeft(Node* node) {
+    Node* grandchild = node->right->left;
+    Node* newParent = node->right;
     newParent->left = node;
     node->right = grandchild;
     return newParent;
 }
 
-BalancedBST::Node* rotateRight(Node* node) {
-    grandchild = node->left->right;
-    newParent = node->left;
+BalancedBST::Node* BalancedBST::rotateRight(Node* node) {
+    Node* grandchild = node->left->right;
+    Node* newParent = node->left;
     newParent->right = node;
     node->left = grandchild;
     return newParent;
+}
+
+void BalancedBST::printHeight(int ID) {
+    printHeightHelper(root, ID);
+}
+
+void BalancedBST::printHeightHelper(Node* node, int ID) {
+    if (node == nullptr) {
+        cout << 0 << endl;
+    }
+    else if (ID == node->ID) {
+        cout << node->name << ", " << node->height << endl;
+    }
+    else if (ID < node->ID) {
+        printHeightHelper(node->left, ID);
+    }
+    else if (ID > node->ID) {
+        printHeightHelper(node->right, ID);
+    }
+}
+
+int BalancedBST::height(Node* node) {
+    if (node == nullptr)
+        return 0;
+    return node->height;
 }

@@ -4,17 +4,18 @@
 #include <vector>
 #include <regex>
 #include <stack>
+#include <queue>
 using namespace std;
 
 class BalancedBST {
 public:
     BalancedBST();
     ~BalancedBST();
-
+    
 private:
     struct Node {
         int ID;
-        int height;
+        int height = 1;
         string name;
         Node* left;
         Node* right;
@@ -35,6 +36,8 @@ public:
     void printPostorder(); // done
     void printLevelCount(); // done
     void removeInorder(int n); // done
+    void printHeight(int ID); // temp
+    void printHeightHelper(Node* node, int ID); // temp
 
 private:
     Node* root;
@@ -53,4 +56,6 @@ private:
     void removeInorderHelper(Node* node, int n);
     BalancedBST::Node* rotateLeft(Node* node);
     BalancedBST::Node* rotateRight(Node* node);
+    int height(Node* node);
+    //void updateNodeHeight(Node* node);
 };
