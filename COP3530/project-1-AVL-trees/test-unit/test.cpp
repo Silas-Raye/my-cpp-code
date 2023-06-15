@@ -1,6 +1,9 @@
 #include "../src/main.cpp"
+#include "../src/BalancedBST.cpp"
+#include "../src/BalancedBST.h"
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
+using namespace std;
 
 /*
 	To check output (At the Project1 directory):
@@ -8,15 +11,13 @@
 */
 
 TEST_CASE("BST Insert", "[flag]"){
-	/*
-		MyAVLTree tree;   // Create a Tree object 
-		tree.insert(3);
-		tree.insert(2);
-		tree.insert(1);
-		std::vector<int> actualOutput = tree.inorder();
-		std::vector<int> expectedOutput = {1, 2, 3};
-		REQUIRE(expectedOutput.size() == actualOutput.size());
-		REQUIRE(actualOutput == expectedOutput);
-	*/
+	BalancedBST tree; // Create a Tree object 
+	tree.insert("a", 3);
+	tree.insert("b", 2);
+	tree.insert("c", 1);
+	// std::vector<int> actualOutput = tree.inorder();
+	// std::vector<int> expectedOutput = {1, 2, 3};
+	// REQUIRE(expectedOutput.size() == actualOutput.size());
+	// REQUIRE(actualOutput == expectedOutput);
 	REQUIRE(1 == 1);
 }
