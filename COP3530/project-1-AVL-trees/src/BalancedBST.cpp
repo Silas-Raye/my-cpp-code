@@ -17,19 +17,19 @@ void BalancedBST::destructorHelper(Node* node) {
     }
 }
 
-bool BalancedBST::checkName(string name) {
+bool BalancedBST::checkName(string name) { // O(l) where l = length of string
     regex pattern("^[a-zA-Z ]*$");
     return regex_match(name, pattern);
 }
 
-bool BalancedBST::checkID(int ID) {
+bool BalancedBST::checkID(int ID) { // O(1)
     if (ID < 0 || to_string(ID).length() != 8) return false;
     return true;
 }
 
-BalancedBST::Node* BalancedBST::insert(string name, int ID) {
-    if (checkName(name) && checkID(ID) && !searchHelper(root, ID, false)) {
-        insertHelper(root, name, ID);
+BalancedBST::Node* BalancedBST::insert(string name, int ID) { // O(l * log n) where l = length of string and n = number of nodes in tree
+    if (checkName(name) /*O(l)*/ && checkID(ID) /*O(1)*/ && !searchHelper(root, ID, false) /*O(log n)*/ ) {
+        insertHelper(root, name, ID); // O(log n)
         cout << "successful" << endl;
     }
     else {
@@ -38,7 +38,7 @@ BalancedBST::Node* BalancedBST::insert(string name, int ID) {
     return root;
 }
 
-BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) {
+BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) { // O(log n) where n = number of nodes in tree
     if (node == nullptr) {
         node = new Node;
         node->ID = ID;
@@ -52,33 +52,38 @@ BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) {
     else {
         insertHelper(node->right, name, ID);
     }
-    node->height = 1 + max(height(node->left),height(node->right));
-    int balance = getBalance(node);
+    node->height = 1 + max(height(node->left),height(node->right)); // height is O(1)
+    int balance = getBalance(node); // getBalance is O(1)
 
+    bool printing = false;
     if (balance > 1) { // tree is right heavy
         if (getBalance(node->right) < 0) { // tree's right subtree is left heavy
-            node->right = rotateRight(node->right);
-            node = rotateLeft(node);
+            if (printing) cout << "tree's right subtree is left heavy" << endl;
+            node->right = rotateRight(node->right); // O(1)
+            node = rotateLeft(node); // O(1)
         }
         else {
-            node = rotateLeft(node);
+            if (printing) cout << "tree's right subtree is right heavy" << endl;
+            node = rotateLeft(node); // O(1)
         }
     }
     if (balance < -1) { // tree is left heavy
         if (getBalance(node->left) > 0) { // tree's left subtree is right heavy
-            node->left = rotateLeft(node->left);
-            node = rotateRight(node);
+            if (printing) cout << "tree's left subtree is right heavy" << endl;
+            node->left = rotateLeft(node->left); // O(1)
+            node = rotateRight(node); // O(1)
         }
         else {
-            node = rotateRight(node);
+            if (printing) cout << "tree's left subtree is left heavy" << endl;
+            node = rotateRight(node); // O(1)
         }
     }
     return node;
 }
 
-BalancedBST::Node* BalancedBST::remove(int ID) {
-    if (checkID(ID) && searchHelper(root, ID, false)) {
-        root = removeHelper(root, ID);
+BalancedBST::Node* BalancedBST::remove(int ID) { // O(log n) where n = number of nodes in tree
+    if (checkID(ID) /*O(1)*/ && searchHelper(root, ID, false) /*O(log n)*/) {
+        root = removeHelper(root, ID); // O(log n)
         cout << "successful" << endl;
         return root;
     }
@@ -86,7 +91,7 @@ BalancedBST::Node* BalancedBST::remove(int ID) {
     return nullptr;
 }
 
-BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
+BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) { // O(log n) where n = number of nodes in tree
     if (node == nullptr) {
         return node;
     }
@@ -137,15 +142,15 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) {
     return node;
 }
 
-bool BalancedBST::search(int ID) {
-    if (checkID(ID) && searchHelper(root, ID, true)) {
+bool BalancedBST::search(int ID) { // O(log n) where n = number of nodes in tree
+    if (checkID(ID) /*O(1)*/ && searchHelper(root, ID, true) /*O(log n)*/) {
         return true;
     }
     cout << "unsuccessful" << endl;
     return false;
 }
 
-bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
+bool BalancedBST::searchHelper(Node* node, int ID, bool printing) { // O(log n) where n = number of nodes in tree
     if (node == nullptr) {
         return false;
     }
@@ -162,8 +167,8 @@ bool BalancedBST::searchHelper(Node* node, int ID, bool printing) {
     return false;
 }
 
-bool BalancedBST::search(string name) {
-    if (checkName(name) && searchHelper(root, name)) {
+bool BalancedBST::search(string name) { // O(l * log n) where l = length of name and n = number of nodes in tree
+    if (checkName(name) /*O(l)*/ && searchHelper(root, name) /*O(log n)*/) {
         return true;
     }
     cout << "unsuccessful" << endl;
@@ -185,30 +190,30 @@ bool BalancedBST::searchHelper(Node* node, string name) {
     return found;
 }
 
-void BalancedBST::printInorder() {
-    vector<string> inorderVec = printInorderHelper(root);
+void BalancedBST::printInorder() { // O(n) where n = number of nodes in tree
+    vector<Node*> inorderVec = printInorderHelper(root);
     if (inorderVec.size() > 0) {
         for (int i = 0; i < inorderVec.size() - 1; i++) {
-            cout << inorderVec[i] << ", ";
+            cout << inorderVec[i]->name << ", ";
         }
-        cout << inorderVec[inorderVec.size() - 1];
+        cout << inorderVec[inorderVec.size() - 1]->name;
     }
     cout << endl;
 }
 
-vector<string> BalancedBST::printInorderHelper(Node* node) {
-    vector<string> inorderVec;
+vector<BalancedBST::Node*> BalancedBST::printInorderHelper(Node* node) { // O(n) where n = number of nodes in tree
+    vector<Node*> inorderVec;
     // base case: if the node is null, return an empty vector
     if (node == nullptr) {
         return inorderVec;
     }
     // traverse the left subtree
-    vector<string> leftSubtree = printInorderHelper(node->left);
+    vector<Node*> leftSubtree = printInorderHelper(node->left);
     inorderVec.insert(inorderVec.end(), leftSubtree.begin(), leftSubtree.end());
     // add the current node's value to the vector
-    inorderVec.push_back(node->name);
+    inorderVec.push_back(node);
     // traverse the right subtree
-    vector<string> rightSubtree = printInorderHelper(node->right);
+    vector<Node*> rightSubtree = printInorderHelper(node->right);
     inorderVec.insert(inorderVec.end(), rightSubtree.begin(), rightSubtree.end());
     return inorderVec;
 }
@@ -242,38 +247,38 @@ vector<BalancedBST::Node*> BalancedBST::printPreorderHelper(Node* node) {
 }
 
 void BalancedBST::printPostorder() {
-    vector<string> postorderVec = printPostorderHelper(root);
+    vector<Node*> postorderVec = printPostorderHelper(root);
     if (postorderVec.size() > 0) {
         for (int i = 0; i < postorderVec.size() - 1; i++) {
-            cout << postorderVec[i] << ", ";
+            cout << postorderVec[i]->name << ", ";
         }
-        cout << postorderVec[postorderVec.size() - 1];
+        cout << postorderVec[postorderVec.size() - 1]->name;
     }
     cout << endl;
 }
 
-vector<string> BalancedBST::printPostorderHelper(Node* node) {
-    vector<string> postorderVec;
+vector<BalancedBST::Node*> BalancedBST::printPostorderHelper(Node* node) {
+    vector<Node*> postorderVec;
     // base case: if the node is null, return an empty vector
     if (node == nullptr) {
         return postorderVec;
     }
     // traverse the left subtree
-    vector<string> leftSubtree = printPostorderHelper(node->left);
+    vector<Node*> leftSubtree = printPostorderHelper(node->left);
     postorderVec.insert(postorderVec.end(), leftSubtree.begin(), leftSubtree.end());
     // traverse the right subtree
-    vector<string> rightSubtree = printPostorderHelper(node->right);
+    vector<Node*> rightSubtree = printPostorderHelper(node->right);
     postorderVec.insert(postorderVec.end(), rightSubtree.begin(), rightSubtree.end());
     // add the current node's value to the vector
-    postorderVec.push_back(node->name);
+    postorderVec.push_back(node);
     return postorderVec;
 }
 
-void BalancedBST::printLevelCount() {
+void BalancedBST::printLevelCount() { // O(n) where n = number of nodes in tree
     cout << printLevelCountHelper(root) << endl;
 }
 
-int BalancedBST::printLevelCountHelper(Node* node) {
+int BalancedBST::printLevelCountHelper(Node* node) { 
     if (node == nullptr) {
         return 0;
     }
@@ -287,9 +292,9 @@ void BalancedBST::removeInorder(int n) {
 }
 
 void BalancedBST::removeInorderHelper(Node* node, int n) {
-    vector<string> inorderVec = printInorderHelper(node);
+    vector<Node*> inorderVec = printInorderHelper(node);
     if (n <= inorderVec.size()) {
-        string name = inorderVec[n];
+        string name = inorderVec[n]->name;
         stack<Node*> s;
         s.push(root);
         Node* curr = nullptr;

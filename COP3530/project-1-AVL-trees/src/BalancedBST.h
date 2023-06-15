@@ -25,8 +25,7 @@ public:
     Node* insert(string name, int ID); // done
     Node* remove(int ID); // done
     bool search(int ID); // done
-    bool search(string name);
-    // Not printing IDs in the right order in the case of duplicate names
+    bool search(string name); // done
     void printInorder(); // done
     void printPreorder(); // done
     void printPostorder(); // done
@@ -43,9 +42,9 @@ private:
     Node* removeHelper(Node*& node, int ID);
     bool searchHelper(Node* node, int ID, bool printing);
     bool searchHelper(Node* node, string name);
-    vector<string> printInorderHelper(Node* node);
+    vector<Node*> printInorderHelper(Node* node);
     vector<Node*> printPreorderHelper(Node* node);
-    vector<string> printPostorderHelper(Node* node);
+    vector<Node*> printPostorderHelper(Node* node);
     int printLevelCountHelper(Node* node);
     void removeInorderHelper(Node* node, int n);
     Node* rotateLeft(Node* node);
