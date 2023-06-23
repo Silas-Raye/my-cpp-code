@@ -41,8 +41,7 @@ int main(){
 						idStr = cmd.substr(j + 2);
 					}
 				}
-				int id = stoi(idStr);
-				tree.insert(name, id);
+				tree.insert(name, idStr);
 			}
 		}
 

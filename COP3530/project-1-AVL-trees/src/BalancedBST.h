@@ -22,7 +22,7 @@ private:
     };
 
 public:
-    Node* insert(string name, int ID); // done
+    Node* insert(string name, string ID); // done
     Node* remove(int ID); // done
     bool search(int ID); // done
     bool search(string name); // done
@@ -37,7 +37,7 @@ private:
 
     void destructorHelper(Node* node);
     bool checkName(string name);
-    bool checkID(int ID);
+    bool checkID(string ID);
     Node* insertHelper(Node*& node, string name, int ID);
     Node* removeHelper(Node*& node, int ID);
     bool searchHelper(Node* node, int ID, bool printing);

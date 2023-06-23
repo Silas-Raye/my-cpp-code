@@ -2,14 +2,14 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: g++ build active file",
-            "command": "/usr/bin/g++",
+            "label": "C/C++: g++.exe build active file",
+            "command": "C:\\Strawberry\\c\\bin\\g++.exe",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${fileDirname}/**.cpp",
+                "${fileDirname}/**.cpp", // "${file}",
                 "-o",
-                "${fileDirname}/../build/${fileBasenameNoExtension}.exe"
+                "${fileDirname}/../build/${fileBasenameNoExtension}.exe" //"${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"

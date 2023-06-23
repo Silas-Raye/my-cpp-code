@@ -22,14 +22,14 @@ bool BalancedBST::checkName(string name) { // O(l) where l = length of string
     return regex_match(name, pattern);
 }
 
-bool BalancedBST::checkID(int ID) { // O(1)
-    if (ID < 0 || to_string(ID).length() != 8) return false;
+bool BalancedBST::checkID(string ID) { // O(1)
+    if (stoi(ID) < 0 || ID.length() != 8) return false;
     return true;
 }
 
-BalancedBST::Node* BalancedBST::insert(string name, int ID) { // O(l * log n) where l = length of string and n = number of nodes in tree
-    if (checkName(name) /*O(l)*/ && checkID(ID) /*O(1)*/ && !searchHelper(root, ID, false) /*O(log n)*/ ) {
-        insertHelper(root, name, ID); // O(log n)
+BalancedBST::Node* BalancedBST::insert(string name, string ID) { // O(l * log n) where l = length of string and n = number of nodes in tree
+    if (checkName(name) /*O(l)*/ && checkID(ID) /*O(1)*/ && !searchHelper(root, stoi(ID), false) /*O(log n)*/ ) {
+        insertHelper(root, name, stoi(ID)); // O(log n)
         cout << "successful" << endl;
     }
     else {
@@ -82,7 +82,7 @@ BalancedBST::Node* BalancedBST::insertHelper(Node*& node, string name, int ID) {
 }
 
 BalancedBST::Node* BalancedBST::remove(int ID) { // O(log n) where n = number of nodes in tree
-    if (checkID(ID) /*O(1)*/ && searchHelper(root, ID, false) /*O(log n)*/) {
+    if (/*checkID(ID) O(1) &&*/ searchHelper(root, ID, false) /*O(log n)*/) {
         root = removeHelper(root, ID); // O(log n)
         cout << "successful" << endl;
         return root;
@@ -143,7 +143,7 @@ BalancedBST::Node* BalancedBST::removeHelper(Node*& node, int ID) { // O(log n) 
 }
 
 bool BalancedBST::search(int ID) { // O(log n) where n = number of nodes in tree
-    if (checkID(ID) /*O(1)*/ && searchHelper(root, ID, true) /*O(log n)*/) {
+    if (/*checkID(stoi(ID)) O(1) &&*/ searchHelper(root, ID, true) /*O(log n)*/) {
         return true;
     }
     cout << "unsuccessful" << endl;
@@ -324,6 +324,8 @@ BalancedBST::Node* BalancedBST::rotateLeft(Node* node) {
     Node* newParent = node->right;
     newParent->left = node;
     node->right = grandchild;
+    node->height = 1 + max(height(node->left),height(node->right));
+    newParent->height = 1 + max(height(newParent->left),height(newParent->right));
     return newParent;
 }
 
@@ -332,6 +334,8 @@ BalancedBST::Node* BalancedBST::rotateRight(Node* node) {
     Node* newParent = node->left;
     newParent->right = node;
     node->left = grandchild;
+    node->height = 1 + max(height(node->left),height(node->right));
+    newParent->height = 1 + max(height(newParent->left),height(newParent->right));
     return newParent;
 }
 
